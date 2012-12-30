@@ -87,7 +87,7 @@ class Multirel_ft extends EE_Fieldtype
 
         $prefix = element('variable_prefix', $params);
 
-        preg_match_all('/{'.$prefix.'(entry_date|edit_date|expiration_date) format=([\042\047])(.*?)\\2}/', $tagdata, $dates);
+        preg_match_all('/{'.$prefix.'(entry_date|edit_date|expiration_date|comment_expiration_date|recent_comment_date) format=([\042\047])(.*?)\\2}/', $tagdata, $dates);
         preg_match_all('/{'.$prefix.'(url_title_path|title_permalink)=[\042\047]?(.*?)[\042\047]?}/', $tagdata, $url_title_paths);
         preg_match_all('/{'.$prefix.'entry_id_path=[\042\047]?(.*?)[\042\047]?}/', $tagdata, $entry_id_paths);
 
@@ -103,7 +103,7 @@ class Multirel_ft extends EE_Fieldtype
 
         $count = 0;
 
-        $total_results = count($result);
+        $total_results = count($rows);
 
         foreach ($rows as $row)
         {
@@ -229,8 +229,12 @@ class Multirel_ft extends EE_Fieldtype
         $this->EE->TMPL->tagdata = $tagdata;
         $this->EE->TMPL->tagparams = $params;
         $this->EE->TMPL->tagparams['entry_id'] = $data;
-        $this->EE->TMPL->tagparams['fixed_order'] = $data;
         $this->EE->TMPL->tagparams['dynamic'] = 'no';
+
+        if ( ! isset($params['orderby']))
+        {
+            $this->EE->TMPL->tagparams['fixed_order'] = $data;
+        }
         
         $output = $channel->entries();
 
