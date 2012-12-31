@@ -270,6 +270,21 @@ class Multirel_ft extends EE_Fieldtype
     {
         return $this->_display_settings($data);
     }
+
+    public function display_var_settings($data)
+    {
+        return $this->_display_settings($data);
+    }
+
+    public function display_var_tag($data, $params = array(), $tagdata = FALSE)
+    {
+        if (isset($params['entries']) && $params['entries'] === 'yes')
+        {
+            return $this->replace_entries($data, $params, $tagdata);
+        }
+
+        return $this->replace_tag($data, $params, $tagdata);
+    }
     
     public function save_settings($data)
     {
@@ -286,7 +301,7 @@ class Multirel_ft extends EE_Fieldtype
         );
     }
 
-    public function save_cell_settings($data)
+    protected function _save_settings($data)
     {
         $this->EE->load->helper('array');
 
@@ -297,6 +312,16 @@ class Multirel_ft extends EE_Fieldtype
             'multirel_max' => element('multirel_max', $data),
             'multirel_multiple' => element('multirel_multiple', $data),
         );
+    }
+
+    public function save_cell_settings($data)
+    {
+        return $this->_save_settings($data);
+    }
+
+    public function save_var_settings($data)
+    {
+        return $this->_save_settings($_POST);
     }
 
     public function display_cell($data)
@@ -334,7 +359,17 @@ class Multirel_ft extends EE_Fieldtype
         );
     }
 
+    public function display_var_field($data)
+    {
+        return $this->_display_field($data, $this->field_name);
+    }
+
     public function save_cell($data)
+    {
+        return $this->save($data);
+    }
+
+    public function save_var_field($data)
     {
         return $this->save($data);
     }
@@ -434,6 +469,8 @@ class Multirel_ft extends EE_Fieldtype
         
         if ($options === FALSE)
         {
+            //$db = $this->EE->load->database(array('conn_id' => $this->EE->db->conn_id), TRUE, TRUE);
+
             $this->EE->db->select('entry_id, title, entry_date')
                       ->from('channel_titles')
                       ->where('channel_id', $this->settings['multirel_channel_id'])
