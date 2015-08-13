@@ -481,6 +481,11 @@ class Multirel_ft extends EE_Fieldtype
                 $this->EE->db->limit($this->settings['multirel_max']);
             }
             
+            if ($this->EE->extensions->active_hook('multirel_options_query'))
+            {
+                $this->EE->extensions->call('multirel_options_query', $this, $field_name, $this->EE->db);
+            }
+
             $query = $this->EE->db->get();
 
             $options = array();
