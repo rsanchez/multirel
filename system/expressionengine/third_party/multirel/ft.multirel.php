@@ -471,9 +471,9 @@ class Multirel_ft extends EE_Fieldtype
         {
             //$db = $this->EE->load->database(array('conn_id' => $this->EE->db->conn_id), TRUE, TRUE);
 
-            $this->EE->db->select('entry_id, title, entry_date')
+            $this->EE->db->select('channel_titles.entry_id, channel_titles.title, channel_titles.entry_date')
                       ->from('channel_titles')
-                      ->where('channel_id', $this->settings['multirel_channel_id'])
+                      ->where('channel_titles.channel_id', $this->settings['multirel_channel_id'])
                       ->order_by($this->settings['multirel_orderby'], $this->settings['multirel_sort']);
             
             if ($this->settings['multirel_max'])
