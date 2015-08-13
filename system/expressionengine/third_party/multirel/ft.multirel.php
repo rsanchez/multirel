@@ -498,11 +498,6 @@ class Multirel_ft extends EE_Fieldtype
             foreach ($query->result() as $row)
             {
                 $options[$row->entry_id] = $row->title;
-
-                if ($this->settings['multirel_orderby'] === 'entry_date')
-                {
-                    $options[$row->entry_id] .= date(' (Y-m-d)', $row->entry_date);
-                }
             }
             
             $query->free_result();
